@@ -218,13 +218,20 @@ var initMap = function initMap(data) {
     minZoom: -3
   });
   var geoJson = L.geoJSON(data, {
-    weight: 2
+    weight: 2,
+    onEachFeature: getFeature
   }).addTo(map);
   var osm = L.tileLayer("https://tile.openstreetmap.org/{z}/{x}/{y}.png", {
     maxZoom: 19,
     attribution: '&copy; <a href="http://www.openstreetmap.org/copyright">OpenStreetMap</a>'
   }).addTo(map);
   map.fitBounds(geoJson.getBounds());
+};
+var getFeature = function getFeature(feature, layer) {
+  if (!feature.id) return;
+  var name = feature.properties.name;
+  layer.bindTooltip(name).openTooltip();
+  console.log(name);
 };
 fetchData();
 },{"./styles.css":"src/styles.css"}],"node_modules/parcel-bundler/src/builtins/hmr-runtime.js":[function(require,module,exports) {

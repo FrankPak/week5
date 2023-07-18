@@ -23,6 +23,7 @@ const initMap = (data) => {
 
   let geoJson = L.geoJSON(data, {
     weight: 2,
+    onEachFeature: getFeature,
   }).addTo(map);
 
   let osm = L.tileLayer("https://tile.openstreetmap.org/{z}/{x}/{y}.png", {
@@ -34,4 +35,11 @@ const initMap = (data) => {
   map.fitBounds(geoJson.getBounds());
 };
 
+const getFeature = (feature, layer) => {
+    if(!feature.id) return;
+    const name = feature.properties.name;
+
+    layer.bindTooltip(name).openTooltip();
+    console.log(name)
+}
 fetchData();
