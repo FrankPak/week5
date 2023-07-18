@@ -2,4 +2,6 @@ body {
   font-family: sans-serif;
 }
 
-#map { height: 180px; }
+#map {
+  height: 97vh;
+}
