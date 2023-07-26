@@ -13,7 +13,6 @@ const fetchData = async () => {
     migrationJson.dataset.dimension.Tuloalue.category.index;
 
   //console.log(migrationIndex["KU018"]);
-  console.log(migrationJson);
 
   const departureURL =
     "https://statfin.stat.fi/PxWeb/sq/944493ca-ea4d-4fd9-a75c-4975192f7b6e";
@@ -23,7 +22,7 @@ const fetchData = async () => {
     departureJson.dataset.dimension.Lähtöalue.category.index;
 
   //console.log(geoJson.features);
-  console.log(departureJson);
+  //console.log(departureJson);
 
   for (let i in geoJson.features) {
     let kunta = geoJson.features[i].properties.kunta;
@@ -43,7 +42,7 @@ const fetchData = async () => {
     geoJson.features[i].properties.hue = hue;
   }
 
-  console.log(geoJson.features);
+  //console.log(geoJson.features);
 
   initMap(geoJson);
 };
@@ -83,15 +82,12 @@ const getFeature = (feature, layer) => {
   );
 
   layer.bindTooltip(name).openTooltip();
-  //console.log(name);
 };
 
 function style(feature) {
   return {
-    color: `hsl(${feature.properties.hue},75% 50%)`,
+    color: `hsl(${feature.properties.hue},75%,50%)`,
   };
 }
-
-//function getHue() {}
 
 fetchData();

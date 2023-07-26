@@ -205,18 +205,17 @@ var fetchData = /*#__PURE__*/function () {
         case 13:
           migrationJson = _context.sent;
           migrationIndex = migrationJson.dataset.dimension.Tuloalue.category.index; //console.log(migrationIndex["KU018"]);
-          console.log(migrationJson);
           departureURL = "https://statfin.stat.fi/PxWeb/sq/944493ca-ea4d-4fd9-a75c-4975192f7b6e";
-          _context.next = 19;
+          _context.next = 18;
           return fetch(departureURL);
-        case 19:
+        case 18:
           departureData = _context.sent;
-          _context.next = 22;
+          _context.next = 21;
           return departureData.json();
-        case 22:
+        case 21:
           departureJson = _context.sent;
           departureIndex = departureJson.dataset.dimension.Lähtöalue.category.index; //console.log(geoJson.features);
-          console.log(departureJson);
+          //console.log(departureJson);
           for (i in geoJson.features) {
             kunta = geoJson.features[i].properties.kunta;
             arrivalindex = migrationIndex["KU" + kunta];
@@ -231,9 +230,11 @@ var fetchData = /*#__PURE__*/function () {
             geoJson.features[i].properties.departure = departureAmount;
             geoJson.features[i].properties.hue = hue;
           }
-          console.log(geoJson.features);
+
+          //console.log(geoJson.features);
+
           initMap(geoJson);
-        case 28:
+        case 25:
         case "end":
           return _context.stop();
       }
@@ -266,17 +267,12 @@ var getFeature = function getFeature(feature, layer) {
   console.log(feature.properties);
   layer.bindPopup("<ul> ".concat(name, "\n            <li> Migartion: ").concat(arrival, "</li>\n            <li> Depature: ").concat(departure, "</li>\n        </ul>"));
   layer.bindTooltip(name).openTooltip();
-  //console.log(name);
 };
-
 function style(feature) {
   return {
-    color: "hsl(".concat(feature.properties.hue, ",75% 50%)")
+    color: "hsl(".concat(feature.properties.hue, ",75%,50%)")
   };
 }
-
-//function getHue() {}
-
 fetchData();
 },{"./styles.css":"src/styles.css"}],"node_modules/parcel-bundler/src/builtins/hmr-runtime.js":[function(require,module,exports) {
 var global = arguments[3];
