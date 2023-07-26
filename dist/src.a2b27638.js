@@ -182,7 +182,7 @@ function asyncGeneratorStep(gen, resolve, reject, _next, _throw, key, arg) { try
 function _asyncToGenerator(fn) { return function () { var self = this, args = arguments; return new Promise(function (resolve, reject) { var gen = fn.apply(self, args); function _next(value) { asyncGeneratorStep(gen, resolve, reject, _next, _throw, "next", value); } function _throw(err) { asyncGeneratorStep(gen, resolve, reject, _next, _throw, "throw", err); } _next(undefined); }); }; }
 var fetchData = /*#__PURE__*/function () {
   var _ref = _asyncToGenerator( /*#__PURE__*/_regeneratorRuntime().mark(function _callee() {
-    var url, geoData, geoJson, migrationURL, migrationData, migrationJson, migrationIndex, departureURL, departureData, departureJson, departureIndex, i, kunta, arrivalindex, departureindex, arrivalAmount, departureAmount;
+    var url, geoData, geoJson, migrationURL, migrationData, migrationJson, migrationIndex, departureURL, departureData, departureJson, departureIndex, i, kunta, arrivalindex, departureindex, arrivalAmount, departureAmount, hue;
     return _regeneratorRuntime().wrap(function _callee$(_context) {
       while (1) switch (_context.prev = _context.next) {
         case 0:
@@ -223,8 +223,13 @@ var fetchData = /*#__PURE__*/function () {
             departureindex = departureIndex["KU" + kunta];
             arrivalAmount = migrationJson.dataset.value[arrivalindex];
             departureAmount = departureJson.dataset.value[departureindex];
+            hue = Math.pow(arrivalAmount / departureAmount, 3) * 60;
+            if (hue > 120) {
+              hue = 120;
+            }
             geoJson.features[i].properties.arrival = arrivalAmount; //rewrite it into the json
             geoJson.features[i].properties.departure = departureAmount;
+            geoJson.features[i].properties.hue = hue;
           }
           console.log(geoJson.features);
           initMap(geoJson);
@@ -244,7 +249,8 @@ var initMap = function initMap(geoData) {
   });
   var geoJson = L.geoJSON(geoData, {
     weight: 2,
-    onEachFeature: getFeature
+    onEachFeature: getFeature,
+    style: style
   }).addTo(map);
   var osm = L.tileLayer("https://tile.openstreetmap.org/{z}/{x}/{y}.png", {
     maxZoom: 19,
@@ -254,16 +260,22 @@ var initMap = function initMap(geoData) {
 };
 var getFeature = function getFeature(feature, layer) {
   if (!feature.id) return;
-  var id = feature.id;
-  var kunta = feature.properties.kunta;
   var name = feature.properties.name;
-  var posMig = feature.properties.arrival;
-  var negMig = feature.properties.departure;
+  var arrival = feature.properties.arrival;
+  var departure = feature.properties.departure;
   console.log(feature.properties);
-  layer.bindPopup("<ul> ".concat(name, "\n            <li> Migartion: ").concat(posMig, "</li>\n            <li> Deprature: ").concat(negMig, "</li>\n        </ul>"));
+  layer.bindPopup("<ul> ".concat(name, "\n            <li> Migartion: ").concat(arrival, "</li>\n            <li> Depature: ").concat(departure, "</li>\n        </ul>"));
   layer.bindTooltip(name).openTooltip();
   //console.log(name);
 };
+
+function style(feature) {
+  return {
+    color: "hsl(".concat(feature.properties.hue, ",75% 50%)")
+  };
+}
+
+//function getHue() {}
 
 fetchData();
 },{"./styles.css":"src/styles.css"}],"node_modules/parcel-bundler/src/builtins/hmr-runtime.js":[function(require,module,exports) {

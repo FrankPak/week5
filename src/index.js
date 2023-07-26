@@ -33,8 +33,14 @@ const fetchData = async () => {
     let arrivalAmount = migrationJson.dataset.value[arrivalindex];
     let departureAmount = departureJson.dataset.value[departureindex];
 
+    let hue = Math.pow(arrivalAmount / departureAmount, 3) * 60;
+    if (hue > 120) {
+      hue = 120;
+    }
+
     geoJson.features[i].properties.arrival = arrivalAmount; //rewrite it into the json
     geoJson.features[i].properties.departure = departureAmount;
+    geoJson.features[i].properties.hue = hue;
   }
 
   console.log(geoJson.features);
@@ -50,6 +56,7 @@ const initMap = (geoData) => {
   let geoJson = L.geoJSON(geoData, {
     weight: 2,
     onEachFeature: getFeature,
+    style: style,
   }).addTo(map);
 
   let osm = L.tileLayer("https://tile.openstreetmap.org/{z}/{x}/{y}.png", {
@@ -63,22 +70,28 @@ const initMap = (geoData) => {
 
 const getFeature = (feature, layer) => {
   if (!feature.id) return;
-  const id = feature.id;
-  const kunta = feature.properties.kunta;
   const name = feature.properties.name;
-  const posMig = feature.properties.arrival;
-  const negMig = feature.properties.departure;
+  const arrival = feature.properties.arrival;
+  const departure = feature.properties.departure;
   console.log(feature.properties);
 
   layer.bindPopup(
     `<ul> ${name}
-            <li> Migartion: ${posMig}</li>
-            <li> Deprature: ${negMig}</li>
+            <li> Migartion: ${arrival}</li>
+            <li> Depature: ${departure}</li>
         </ul>`
   );
 
   layer.bindTooltip(name).openTooltip();
   //console.log(name);
 };
+
+function style(feature) {
+  return {
+    color: `hsl(${feature.properties.hue},75% 50%)`,
+  };
+}
+
+//function getHue() {}
 
 fetchData();
