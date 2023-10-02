@@ -90,5 +90,3 @@ function style(feature) {
 }
 
 fetchData();
-
-import "./styles.css";
