@@ -1,4 +1,3 @@
-import "./styles.css";
 const fetchData = async () => {
   const url =
     "https://geo.stat.fi/geoserver/wfs?service=WFS&version=2.0.0&request=GetFeature&typeName=tilastointialueet:kunta4500k&outputFormat=json&srsName=EPSG:4326";
