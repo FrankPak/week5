@@ -77,7 +77,7 @@ const getFeature = (feature, layer) => {
     `<ul> ${name}
             <li> Migartion: ${arrival}</li>
             <li> Depature: ${departure}</li>
-        </ul>`
+        </ul>`,
   );
 
   layer.bindTooltip(name).openTooltip();
@@ -90,3 +90,5 @@ function style(feature) {
 }
 
 fetchData();
+
+import "./styles.css";
